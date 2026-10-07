@@ -1,0 +1,26 @@
+const P=location.pathname.split('/').pop()||'index.html',HW='https://headway.co/providers/catherine-becker?utm_source=pem&utm_medium=direct_link&utm_campaign=69805';
+const L=[['index.html','Home'],['services.html','Services'],['faqs.html','FAQs'],['contact.html','Contact']];
+document.body.insertAdjacentHTML('afterbegin',`<div id="bar"></div><header><div class="wrap"><a class="logo" href="index.html"><img src="assets/logo.png" alt="Counseling with Cathy"><span>Counseling with Cathy</span></a><button id="mb" aria-label="Menu" aria-expanded="false"><i></i></button><nav>${L.map(l=>`<a href="${l[0]}" class="${P==l[0]?'on':''}">${l[1]}</a>`).join('')}<a class="btn" href="${HW}">Get started</a></nav></div></header>`);
+document.body.insertAdjacentHTML('beforeend',`<footer><div class="wrap"><div><img src="assets/logo-light.png" alt="Counseling with Cathy"><p>Online therapy in New York. Convenient, confidential, and tailored to you.</p><p style="margin-top:12px"><a href="mailto:connect@counselingwithcathy.com">connect@counselingwithcathy.com</a><a href="tel:+13479263302">(347) 926-3302</a></p></div><div><h4>Quick Links</h4><a href="contact.html">Contact Me</a><a href="services.html">Services</a><a href="faqs.html">FAQs</a><a href="no-surprises-act.html">No Surprises Act</a><a href="resources.html">Crisis Resources</a></div><div><h4>In an emergency</h4><p>Call 911 or go to the nearest emergency room. More help on the <a href="resources.html" style="display:inline;text-decoration:underline">resources page</a>.</p></div><p class="cp">© Counseling with Cathy</p></div></footer>`);
+const H=document.querySelector('header'),B=document.getElementById('bar'),N=document.querySelector('nav'),M=document.getElementById('mb');
+const tg=o=>{N.classList.toggle('o',o);M.classList.toggle('o',o);M.setAttribute('aria-expanded',o);document.body.style.overflow=o?'hidden':''};
+M.onclick=()=>tg(!N.classList.contains('o'));N.querySelectorAll('a').forEach(a=>a.onclick=()=>tg(false));addEventListener('keydown',e=>e.key=='Escape'&&tg(false));
+addEventListener('scroll',()=>{H.classList.toggle('sc',scrollY>40);B.style.width=scrollY/Math.max(1,document.body.scrollHeight-innerHeight)*100+'%'},{passive:true});
+document.querySelectorAll('.faq button').forEach(b=>b.onclick=()=>{const f=b.parentNode,d=b.nextElementSibling,o=f.classList.toggle('o');d.style.maxHeight=o?d.scrollHeight+'px':0});
+document.querySelectorAll('.loop').forEach(s=>{const t=s.querySelector('.tr'),o=[...t.children],n=o.length,dots=s.querySelector('.dots');
+o.forEach(()=>dots.append(document.createElement('b')));o.slice().reverse().forEach(c=>t.prepend(c.cloneNode(true)));o.forEach(c=>t.append(c.cloneNode(true)));
+const c=[...t.children];c.forEach((x,i)=>{if(i<n||i>=2*n){x.setAttribute('aria-hidden','true');x.tabIndex=-1}});
+let st,sw,tm,hold=0;const mk=()=>{st=c[1].offsetLeft-c[0].offsetLeft;sw=st*n},jump=x=>{t.style.scrollSnapType='none';t.scrollLeft=x;t.style.scrollSnapType=''};
+const init=()=>{mk();jump(sw)};init();addEventListener('load',init);addEventListener('resize',init);
+const idx=()=>((Math.round((t.scrollLeft-sw)/st)%n)+n)%n;
+t.addEventListener('scroll',()=>{[...dots.children].forEach((d,i)=>d.classList.toggle('on',i==idx()));clearTimeout(tm);tm=setTimeout(()=>{if(t.scrollLeft<sw-2)jump(t.scrollLeft+sw);else if(t.scrollLeft>=2*sw-2)jump(t.scrollLeft-sw)},140)},{passive:true});
+const go=d=>t.scrollBy({left:d*st,behavior:'smooth'});s.querySelector('.pv').onclick=()=>go(-1);s.querySelector('.nx').onclick=()=>go(1);
+let dn,sx,sl;t.onmousedown=e=>{dn=1;sx=e.pageX;sl=t.scrollLeft;t.style.scrollSnapType='none'};addEventListener('mouseup',()=>{if(dn){dn=0;t.style.scrollSnapType='';t.scrollBy({left:0.01})}});t.onmousemove=e=>{if(dn){e.preventDefault();t.scrollLeft=sl-(e.pageX-sx)}};
+['mouseenter','touchstart','focusin'].forEach(e=>s.addEventListener(e,()=>hold=1,{passive:true}));['mouseleave','touchend','focusout'].forEach(e=>s.addEventListener(e,()=>hold=0,{passive:true}));
+if(!matchMedia('(prefers-reduced-motion:reduce)').matches)setInterval(()=>{if(!hold&&!document.hidden){const r=s.getBoundingClientRect();if(r.top<innerHeight&&r.bottom>0)go(1)}},4500)});
+if(window.gsap&&window.ScrollTrigger&&!matchMedia('(prefers-reduced-motion:reduce)').matches){document.documentElement.classList.add('js');gsap.registerPlugin(ScrollTrigger);
+gsap.from('.hero .k,.hero h1,.hero .hs,.hero .bts,.hero .trust,.sub h1,.sub .hs',{opacity:0,y:40,duration:1,stagger:.14,ease:'power3.out'});
+gsap.to('.hero .bg',{yPercent:12,ease:'none',scrollTrigger:{trigger:'.hero',scrub:true,start:'top top',end:'bottom top'}});
+gsap.to('.cta .bg',{yPercent:10,ease:'none',scrollTrigger:{trigger:'.cta',scrub:true,start:'top bottom',end:'bottom top'}});
+document.querySelectorAll('.rv').forEach(e=>gsap.to(e,{opacity:1,y:0,duration:.9,ease:'power3.out',scrollTrigger:{trigger:e,start:'top 90%'}}));
+document.querySelectorAll('.stg').forEach(g=>gsap.to(g.children,{opacity:1,y:0,duration:.8,stagger:.18,ease:'power3.out',scrollTrigger:{trigger:g,start:'top 85%'}}));}
